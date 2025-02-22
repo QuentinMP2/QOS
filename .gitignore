@@ -1,0 +1,5 @@
+# Results of compilation
+*.o
+
+# PDFs
+pdf/
