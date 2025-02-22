@@ -2,6 +2,7 @@
 #include <inttypes.h>
 #include <n7OS/processor_structs.h>
 #include <n7OS/console.h>
+#include <stdio.h>
 
 void kernel_start(void)
 {
@@ -10,6 +11,8 @@ void kernel_start(void)
 
     // lancement des interruptions
     sti();
+
+    printf("\fWelcome to QOS!\n\tBonsoir\b\nOui\rN");
 
     // on ne doit jamais sortir de kernel_start
     while (1) {
