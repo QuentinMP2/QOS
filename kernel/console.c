@@ -50,28 +50,21 @@ void next_line() {
     index += VGA_WIDTH - get_column();
 }
 
-// void update_cursor() {
-//     uint8_t command_port = 0x3D4;
-//     uint8_t value_port = 0x3D5;
-//     uint16_t position = (uint16_t) index;
+/**
+ * Update the cursor position.
+ */
+void update_cursor() {
+    short command_port = (short) 0x3D4;
+    short value_port = (short) 0x3D5;
+    uint16_t position = (uint16_t) index;
     
-//     /* Low weight */
-//     outb(0x0F, command_port);
-//     outb((uint8_t) (position & 0xFF), value_port);
+    /* Low weight */
+    outb(0x0F, command_port);
+    outb((uint8_t) position, value_port);
 
-//     /* High weight */
-//     outb(0x0E, command_port);
-//     outb((uint8_t) ((position >> 8) & 0xFF), value_port);
-// }
-
-void update_cursor(int x, int y)
-{
-	uint16_t pos = y * VGA_WIDTH + x;
-
-	outb(0x0F, 0x3D4);
-	outb((uint8_t) (pos & 0xFF), 0x3D5);
-	outb(0x0E, 0x3D4);
-	outb((uint8_t) ((pos >> 8) & 0xFF), 0x3D5);
+    /* High weight */
+    outb(0x0E, command_port);
+    outb((uint8_t) (position >> 8), value_port);
 }
 
 /**
@@ -115,5 +108,5 @@ void console_putbytes(const char* s, int len) {
         console_putchar(s[i]);
     }
 
-    update_cursor(get_line(), get_column());
+    update_cursor();
 }
