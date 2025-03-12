@@ -1,6 +1,6 @@
 /**
  * @file mem.h
- * @brief Gestion de l'allocation des pages de la mémoire physique
+ * @brief Allocation of the physical memory pages manager.
  */
 
 #ifndef _MEM_H
@@ -9,53 +9,57 @@
 #include <inttypes.h>
 
 /**
- * @brief Adresse de la dernière ligne adressable de la mémoire
- * 
- * On considère ici une mémoire de 16Mo
+ * @brief Address of the first addressable row in memory.
  */
-#define LAST_MEMORY_INDEX 0XFFFFFF 
+#define FIRST_MEMORY_INDEX 0x100000
 
 /**
- * @brief Taille d'une page en mémoire
+ * @brief Address of the last addressable row in memory.
+ * We consider here a memory of 16Mo.
+ */
+#define LAST_MEMORY_INDEX 0xFFFFFF 
+
+/**
+ * @brief Size of a memory page.
  * 
- * Ici, 0x1000 -> 2^10 * 4 = 4096 octets
+ * Here, 0x1000 -> 2^10 * 4 = 4096 bytes
  */
 #define PAGE_SIZE 0x1000
 
+/** 
+ * @brief Size of the free_page_bitmap_table.
+ */
+#define BITMAP_SIZE ((LAST_MEMORY_INDEX - FIRST_MEMORY_INDEX) / PAGE_SIZE / 32)
+
 /**
- * @brief Marque la page allouée
+ * @brief Mark the allocated page.
+ * When a page is chosen, this function mark it.
  * 
- * Lorsque la page a été choisie, cette fonction permet de la marquer allouée
- * 
- * @param addr Adresse de la page à allouer
+ * @param addr Address of the page to be marked.
  */
 void setPage(uint32_t addr);
 
 /**
- * @brief Désalloue la page
+ * @brief Desallocate the page.
  * 
- * Libère la page allouée.
- * 
- * @param addr Adresse de la page à libérer
+ * @param addr Address of the page to be free.
  */
 void clearPage(uint32_t addr);
 
 /**
- * @brief Fourni la première page libre de la mémoire physique tout en l'allouant
+ * @brief Return the first free page of the physical memory and allocate it.
  * 
- * @return uint32_t Adresse de la page sélectionnée
+ * @return Address of the selected page.
  */
 uint32_t findfreePage();
 
 /**
- * @brief Initialise le gestionnaire de mémoire physique
- * 
+ * @brief Initialize physical memory manager.
  */
 void init_mem();
 
 /**
- * @brief Affiche l'état de la mémoire physique
- * 
+ * @brief Display the physical memory state.
  */
 void print_mem();
 #endif

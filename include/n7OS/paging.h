@@ -1,6 +1,6 @@
 /**
  * @file paging.h
- * @brief Gestion de la pagination dans le noyau
+ * @brief Paging management in the kernel
  */
 #ifndef _PAGING_H
 #define _PAGING_H
@@ -8,16 +8,32 @@
 #include <inttypes.h>
 
 /**
- * @brief Description d'une ligne de la table de page
- * 
+ * @brief Format of an entry in the table of pages.
  */
 typedef struct {
-    // a completer
+    /** Address of the page in the physical memory. */
+    uint32_t ADDR: 20;
+    /** Available in the volatile memory (e.g. RAM). */
+    uint8_t AVAIL: 3;
+    /** Reserved bits section 2. */
+    uint8_t RSVD_2: 2;
+    /** Dirty bit. */
+    uint8_t D: 1;
+    /** Accessed bit. */
+    uint8_t A: 1;
+    /** Reserved bits section 1. */
+    uint8_t RSVD_1: 2;
+    /** User/kernel page (0: kernel page). */
+    uint8_t U: 1;
+    /** Read/write (0: read only). */
+    uint8_t W: 1;
+    /** Present (0: not present). */
+    uint8_t P: 1;
 } page_table_entry_t;
 
 /**
- * @brief Une entrée dans la table de page peut être manipulée en utilisant
- *        la structure page_table_entry_t ou directement la valeur
+ * @brief An entry in the table of pages can be manipulated
+ * using the page_table_entry_t struct or directly the value.
  */
 typedef union {
     page_table_entry_t page_entry;
@@ -25,15 +41,13 @@ typedef union {
 } PTE; // PTE = Page Table Entry 
 
 /**
- * @brief Une table de page (PageTable) est un tableau de descripteurs de page
- * 
+ * @brief A table of pages (PageTable) is an array of page descriptor.
  */
-typedef PTE * PageTable;
+typedef PTE* PageTable;
 
 /**
  * @brief Cette fonction initialise le répertoire de page, alloue les pages de table du noyau
  *        et active la pagination
- * 
  */
 void initialise_paging();
 
