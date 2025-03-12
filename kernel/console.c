@@ -2,7 +2,7 @@
 #include <n7OS/cpu.h>
 
 /** First position of the screen. */
-uint16_t* scr_tab;
+uint16_t *scr_tab;
 
 /** Index of the current position on the screen. */
 int index;
@@ -54,17 +54,15 @@ void next_line() {
  * Update the cursor position.
  */
 void update_cursor() {
-    short command_port = (short) 0x3D4;
-    short value_port = (short) 0x3D5;
     uint16_t position = (uint16_t) index;
     
     /* Low weight */
-    outb(0x0F, command_port);
-    outb((uint8_t) position, value_port);
+    outb(CMD_LOW, PORT_CMD);
+    outb((uint8_t) position, PORT_DATA);
 
     /* High weight */
-    outb(0x0E, command_port);
-    outb((uint8_t) (position >> 8), value_port);
+    outb(CMD_HIGH, PORT_CMD);
+    outb((uint8_t) (position >> 8), PORT_DATA);
 }
 
 /**
@@ -103,7 +101,7 @@ void console_putchar(const char c) {
     }
 }
 
-void console_putbytes(const char* s, int len) {
+void console_putbytes(const char *s, int len) {
     for (int i = 0; i < len; i++) {
         console_putchar(s[i]);
     }

@@ -1,50 +1,84 @@
 #include <n7OS/mem.h>
+#include <debug.h>
 
 /**
- * @brief Marque la page allouée
- * 
- * Lorsque la page a été choisie, cette fonction permet de la marquer allouée
- * 
- * @param addr Adresse de la page à allouer
+ * @brief Bitmap that reference free pages of the physical memory.
+ * Each case of the table represents 32 pages.
+ * 0: free page
  */
+uint32_t free_page_bitmap_table[BITMAP_SIZE];
+
 void setPage(uint32_t addr) {
-
+    uint32_t page_num = (addr - FIRST_MEMORY_INDEX) / PAGE_SIZE;
+    uint32_t bitmap_index = page_num / 32;
+    uint8_t bitmap_offset = page_num % 32;
+    free_page_bitmap_table[bitmap_index] |= (0b1 << bitmap_offset);
 }
 
-/**
- * @brief Désalloue la page
- * 
- * Libère la page allouée.
- * 
- * @param addr Adresse de la page à libérer
- */
 void clearPage(uint32_t addr) {
-
+    uint32_t page_num = (addr - FIRST_MEMORY_INDEX) / PAGE_SIZE;
+    uint32_t bitmap_index = page_num / 32;
+    uint8_t bitmap_offset = page_num % 32;
+    free_page_bitmap_table[bitmap_index] |= (0b0 << bitmap_offset);
 }
 
-/**
- * @brief Fourni la première page libre de la mémoire physique tout en l'allouant
- * 
- * @return uint32_t Adresse de la page sélectionnée
- */
 uint32_t findfreePage() {
-    uint32_t adresse= 0x0;
+    uint32_t index = 0;
+    uint8_t found_page = 0;
+    uint8_t current_bit = 0;
 
-    return adresse;
-}
+    while (found_page != 1) {
+        if (free_page_bitmap_table[index] > 0b0) {
+            // There is at least one bit equals to 1
+            current_bit = 0;
+            while (found_page != 1) {
+                if (((free_page_bitmap_table[index] >> current_bit) ^ 0b1) & 0b1 == 0b1) {
+                    // The current bit is equals to 1
+                    found_page = 1;                    
+                }
+                current_bit++;
+            }
+        }
+        index++;
+    }
 
-/**
- * @brief Initialise le gestionnaire de mémoire physique
- * 
- */
-void init_mem() {
+    if (found_page == 0) {
+        return 0; // Change this by an interruption later
+    }
 
-}
+    // Minus 1 because of the last incrementation of the loop
+    uint32_t addr = FIRST_MEMORY_INDEX + ((index - 1) * 32 + (current_bit - 1)) * PAGE_SIZE;
 
-/**
- * @brief Affiche l'état de la mémoire physique
- * 
- */
-void print_mem() {
+    // Allocate the page
+    setPage(addr);
     
+    return addr;
+}
+
+void init_mem() {
+    for (int i = 0; i < BITMAP_SIZE; i++) {
+        free_page_bitmap_table[i] = 0;
+    }
+}
+
+/**
+ * @brief Print an unsigned integer in binary form.
+ * 
+ * @param number the 32 bits number to print
+ */
+void print_binary(uint32_t number) {
+    for (int i = 0; i < 32; i++) {
+        if (i % 4 == 0 && i != 0) {
+            printf(" "); // For readability
+        }
+        printf("%d", (number >> i) & 0b1);
+    }
+    printf("\n");
+}
+
+void print_mem() {
+    printf("\f");
+    for (int i = 0; i < BITMAP_SIZE; i++) {
+        print_binary(free_page_bitmap_table[i]);
+    }
 }
