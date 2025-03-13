@@ -46,8 +46,38 @@ typedef union {
 typedef PTE* PageTable;
 
 /**
+ * @brief Format of an entry in the directory of pages.
+ */
+typedef struct {
+    /** Address of the page in the physical memory. */
+    uint32_t ADDR: 20;
+    /** Reserved memory section. */
+    uint16_t RSVD: 9;
+    /** User/kernel page (0: kernel page). */
+    uint8_t U: 1;
+    /** Read/write (0: read only). */
+    uint8_t W: 1;
+    /** Present (0: not present). */
+    uint8_t P: 1;
+} page_directory_entry_t;
+
+/**
+ * @brief An entry in the table of directories can be manipulated
+ * using the page_directory_entry_t struct or directly the value.
+ */
+typedef union {
+    page_directory_entry_t page_directory;
+    uint32_t value;
+} PDE; // PDE = Page Directory Entry 
+
+/**
+ * @brief A table of directories (PageDirectory) is an array of directory pages.
+ */
+typedef PDE* PageDirectory;
+
+/**
  * @brief Cette fonction initialise le répertoire de page, alloue les pages de table du noyau
- *        et active la pagination
+ * et active la pagination
  */
 void initialise_paging();
 
