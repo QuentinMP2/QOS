@@ -11,24 +11,24 @@
  * @brief Format of an entry in the table of pages.
  */
 typedef struct {
+    /** Present (0: not present). */
+    uint32_t P: 1;
+    /** Read/write (0: read only). */
+    uint32_t W: 1;
+    /** User/kernel page (0: kernel page). */
+    uint32_t U: 1;
+    /** Reserved bits section 1. */
+    uint32_t RSVD_1: 2;
+    /** Accessed bit. */
+    uint32_t A: 1;
+    /** Dirty bit. */
+    uint32_t D: 1;
+    /** Reserved bits section 2. */
+    uint32_t RSVD_2: 2;
+    /** Available in the volatile memory (e.g. RAM). */
+    uint32_t AVAIL: 3;
     /** Address of the page in the physical memory. */
     uint32_t ADDR: 20;
-    /** Available in the volatile memory (e.g. RAM). */
-    uint8_t AVAIL: 3;
-    /** Reserved bits section 2. */
-    uint8_t RSVD_2: 2;
-    /** Dirty bit. */
-    uint8_t D: 1;
-    /** Accessed bit. */
-    uint8_t A: 1;
-    /** Reserved bits section 1. */
-    uint8_t RSVD_1: 2;
-    /** User/kernel page (0: kernel page). */
-    uint8_t U: 1;
-    /** Read/write (0: read only). */
-    uint8_t W: 1;
-    /** Present (0: not present). */
-    uint8_t P: 1;
 } page_table_entry_t;
 
 /**
@@ -49,16 +49,16 @@ typedef PTE* PageTable;
  * @brief Format of an entry in the directory of pages.
  */
 typedef struct {
+    /** Present (0: not present). */
+    uint32_t P: 1;
+    /** Read/write (0: read only). */
+    uint32_t W: 1;
+    /** User/kernel page (0: kernel page). */
+    uint32_t U: 1;
+    /** Reserved memory section. */
+    uint32_t RSVD: 9;
     /** Address of the page in the physical memory. */
     uint32_t ADDR: 20;
-    /** Reserved memory section. */
-    uint16_t RSVD: 9;
-    /** User/kernel page (0: kernel page). */
-    uint8_t U: 1;
-    /** Read/write (0: read only). */
-    uint8_t W: 1;
-    /** Present (0: not present). */
-    uint8_t P: 1;
 } page_directory_entry_t;
 
 /**
@@ -76,16 +76,16 @@ typedef union {
 typedef PDE* PageDirectory;
 
 /**
- * @brief Cette fonction initialise le répertoire de page, alloue les pages de table du noyau
- * et active la pagination
+ * @brief This function initialise the repertory of page, allocate the pages of kernel tables
+ * and enable the paging.
  */
 void initialise_paging();
 
 /**
- * @brief Cette fonction alloue une page de la mémoire physique à une adresse de la mémoire virtuelle
+ * @brief This function allocate a page of the physical memory at a virtual memory address.
  * 
- * @param address       Adresse de la mémoire virtuelle à mapper
- * @param is_writeable  Si is_writeable == 1, la page est accessible en écriture
+ * @param address       Address of the virtual memory to map
+ * @param is_writeable  If is_writeable == 1, the page is accessible in writing
  * @param is_kernel     Si is_kernel == 1, la page ne peut être accédée que par le noyau
  * @return PageTable    La table de page modifiée
  */

@@ -8,7 +8,7 @@ handler_IT:
     pushl %edx
     pushl %ecx
 # appel a la fonction C realisant le traitant
-    call handler_en_C
+    call handler_C
 # restauration des registres importants
     popl %ecx
     popl %edx
