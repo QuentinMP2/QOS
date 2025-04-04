@@ -8,6 +8,7 @@
 #include <n7OS/mem.h>
 #include <n7OS/kheap.h>
 #include <n7OS/irq.h>
+#include <n7OS/time.h>
 
 void kernel_start(void) {
 
@@ -26,10 +27,13 @@ void kernel_start(void) {
     __asm__ ("int $50");
     printf("\n");
     print_mem();
+    printf("\n");
     // alloc_page_entry(0xA000FFFC, 1, 1);
     // uint32_t *ptr = (uint32_t*)0xA000FFFC;
     // uint32_t test = *ptr;
     // test++; 
+
+    init_timer();
 
     // We mustn't quit the kernel_start function 
     while (1) {

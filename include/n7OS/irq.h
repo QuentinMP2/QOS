@@ -5,6 +5,7 @@
 #include <n7OS/segment.h>
 #include <n7OS/processor_structs.h>
 
+void handler_32_C();
 void handler_50_C();
 void init_irq();
 
