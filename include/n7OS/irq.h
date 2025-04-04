@@ -5,6 +5,9 @@
 #include <n7OS/segment.h>
 #include <n7OS/processor_structs.h>
 
+void handler_50_C();
+void init_irq();
+
 /*
 Une entrée dans l'IDT est sur 64 bits
 

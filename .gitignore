@@ -3,3 +3,6 @@
 
 # PDFs
 pdf/
+
+# compiled kernel
+kernel.bin

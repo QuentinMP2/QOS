@@ -4,7 +4,7 @@
  * @brief Lorsque tout le code du noyau est compilé, le tas du noyau commence juste après.
  */
 extern uint32_t mem_heap;
-uint32_t placement_address = (uint32_t)&mem_heap;
+uint32_t placement_address;
 
 uint32_t kmalloc_int(uint32_t sz, int align, uint32_t *phys) {
     uint32_t address;
@@ -41,5 +41,5 @@ uint32_t kmalloc(uint32_t sz) {
  * @brief Initialize the placement address of the memory heap.
  */
 void kinit() {
-    uint32_t placement_address = (uint32_t)&mem_heap;
+    placement_address = (uint32_t)&mem_heap;
 }

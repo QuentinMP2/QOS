@@ -29,7 +29,7 @@
 /** 
  * @brief Size of the free_page_bitmap_table.
  */
-#define BITMAP_SIZE ((LAST_MEMORY_INDEX - FIRST_MEMORY_INDEX) / PAGE_SIZE / 32)
+#define BITMAP_SIZE ((LAST_MEMORY_INDEX + 1) / PAGE_SIZE / 32)
 
 /**
  * @brief Mark the allocated page.
