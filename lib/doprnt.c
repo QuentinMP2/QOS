@@ -587,7 +587,7 @@ void _doprnt(fmt, args, radix, putc, putc_arg)
 		    if (padc == '0') {
 			/* zero padding goes after sign and prefix */
 			while (--length >= 0)
-			    (*putc)(putc_arg, '0');
+ 			    (*putc)(putc_arg, '0');
 		    }
 		    while (++p != &buf[MAXBUF])
 			(*putc)(putc_arg, *p);
