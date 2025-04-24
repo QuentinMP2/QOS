@@ -8,7 +8,7 @@ extern void handler_IT();
 extern void handler_IT_32();
 extern void handler_IT_50();
 
-uint32_t timer = 3665 * 1000;
+uint32_t timer = 0;
 
 void init_irq() {
     init_irq_entry(32, (uint32_t)handler_IT_32);
