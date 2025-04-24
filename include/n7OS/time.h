@@ -10,6 +10,4 @@
  */
 void init_timer();
 
-void print_timer(uint32_t timer);
-
 #endif

@@ -33,16 +33,29 @@
 
 // Character color: blink|back|text
 #define BLINK   (0<<7)
-#define BACK    (BLACK<<4)
-#define TEXT    WHITE 
+#define BACK    (WHITE<<4)
+#define TEXT    BLACK 
 #define CHAR_COLOR (BLINK|BACK|TEXT)
 
+// Taskbar colors
+#define TASKBAR_BLINK      (0<<7)
+#define TASKBAR_BACK       (GRAY<<4)
+#define TASKBAR_TEXT       BLACK
+#define TASKBAR_CHAR_COLOR (TASKBAR_BLINK|TASKBAR_BACK|TASKBAR_TEXT)
+
+/** Initialise the console. */
 void init_console();
 
 /*
- * This is the function called by printf to send its output to the screen. You
- * have to implement it in the kernel and in the user program.
+ * This is the function called by printf to send its output to the screen.
  */
 void console_putbytes(const char *s, int len);
+
+/** 
+ * @brief Display the hour at the right of the taskbar. 
+ * 
+ * @param timer the current timer
+ */
+void print_taskbar_hour(uint32_t timer);
 
 #endif

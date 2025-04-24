@@ -1,6 +1,7 @@
 #include <n7OS/irq.h>
 #include <n7OS/cpu.h>
 #include <n7OS/time.h>
+#include <n7OS/console.h>
 #include <stdio.h>
 
 extern void handler_IT();
@@ -23,7 +24,7 @@ void handler_32_C() {
     outb(0x20, 0x20);
 
     timer++;
-    print_timer(timer);
+    print_taskbar_hour(timer);
 }
 
 void handler_50_C() {
