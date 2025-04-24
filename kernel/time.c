@@ -19,23 +19,10 @@ void init_timer() {
 
 void print_timer(uint32_t timer) {
     timer /= 1000; // Convert from ms to s
-    
+    uint32_t seconds = timer % 60;
+    uint32_t minutes = (timer % 3600) / 60;
+    uint32_t hours = timer / 3600;
+
     printf("\r");
-    if (timer % 3600 < 10) {
-        printf("0%d:", timer / 3600);
-    } else {
-        printf("%d:", timer / 3600);
-    }
-
-    if ((timer % 3600) / 60 < 10) {
-        printf("0%d:", (timer % 3600) / 60);
-    } else {
-        printf("%d:", (timer % 3600) / 60);
-    }
-
-    if (timer % 60 < 10) {
-        printf("0%d", timer % 60);
-    } else {
-        printf("%d", timer % 60);
-    }
+    printf("%02d:%02d:%02d", hours, minutes, seconds);
 }
