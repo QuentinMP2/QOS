@@ -5,6 +5,9 @@
 #define CLOCK 1000    /* in Hz */
 #define FREQUENCY (F_OSC / CLOCK)
 
+#define CMOS_WR_PORT 0x70
+#define CMOS_RD_PORT 0x71
+
 /**
  * @brief Initialise the timer with 1kHz (1ms).
  */
