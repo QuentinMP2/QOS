@@ -24,7 +24,7 @@ void handler_32_C() {
     outb(0x20, 0x20);
 
     timer++;
-    print_taskbar_hour(timer);
+    print_taskbar_time(timer);
 }
 
 void handler_50_C() {

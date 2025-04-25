@@ -56,6 +56,11 @@ void console_putbytes(const char *s, int len);
  * 
  * @param timer the current timer
  */
-void print_taskbar_hour(uint32_t timer);
+void print_taskbar_time(uint32_t timer);
+
+/** 
+ * @brief Display the date at the center of the taskbar.
+ */
+void print_taskbar_date();
 
 #endif
