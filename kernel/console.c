@@ -11,6 +11,10 @@ int index;
 /** Initial value of index. */
 const uint16_t index_init = VGA_WIDTH;
 
+uint8_t weekday = 0;
+uint8_t day_of_month = 0;
+uint8_t month = 0;
+
 /** Initialise the taskbar. */
 void init_taskbar() {
     // Fill the lign with blanks.
@@ -128,7 +132,7 @@ void console_putbytes(const char *s, int len) {
     update_cursor();
 }
 
-void print_taskbar_hour(uint32_t timer) {
+void print_taskbar_time(uint32_t timer) {
     timer /= 1000; // Convert from ms to s
     uint32_t seconds = timer % 60;
     uint32_t minutes = (timer % 3600) / 60;
@@ -139,4 +143,131 @@ void print_taskbar_hour(uint32_t timer) {
     int index_hour = VGA_WIDTH - 9;
     for (int i = 0; i < 8; i++)
         scr_tab[index_hour + i] = TASKBAR_CHAR_COLOR<<8|(hour_buffer[i]);
+}
+
+/**
+ * Get the abbreviation of the given weekday.
+ * @param weekday the weekday
+ */
+char* get_weekday_abbr(uint8_t weekday) {
+    char *weekday_disp = "";
+    switch (weekday) {
+        case 1:
+            weekday_disp = "sun.";
+            break;
+
+        case 2:
+            weekday_disp = "mon.";
+            break;
+        
+        case 3:
+            weekday_disp = "tue.";
+            break;
+
+        case 4:
+            weekday_disp = "wed.";
+            break;
+
+        case 5:
+            weekday_disp = "thu.";
+            break;
+
+        case 6:
+            weekday_disp = "fri.";
+            break;
+
+        case 7:
+            weekday_disp = "sat.";
+            break;
+
+        default:
+            break;
+    }
+
+    return weekday_disp;
+}
+
+/**
+ * Get the abbreviation of the given month.
+ * @param month the month
+ */
+char* get_month_abbr(uint8_t month) {
+    char *month_disp = "";
+    switch (month) {
+        case 1:
+            month_disp = "Jan.";
+            break;
+
+        case 2:
+            month_disp = "Feb.";
+            break;
+        
+        case 3:
+            month_disp = "Mar.";
+            break;
+
+        case 4:
+            month_disp = "Apr.";
+            break;
+
+        case 5:
+            month_disp = "May ";
+            break;
+
+        case 6:
+            month_disp = "Jun.";
+            break;
+
+        case 7:
+            month_disp = "Jul.";
+            break;
+
+        case 8:
+            month_disp = "Aug.";
+            break;
+
+        case 9:
+            month_disp = "Sep.";
+            break;
+
+        case 10:
+            month_disp = "Oct.";
+            break;
+
+        case 11:
+            month_disp = "Nov.";
+            break;
+
+        case 12:
+            month_disp = "Dec.";
+            break;
+
+        default:
+            break;
+    }
+
+    return month_disp;
+}
+
+void print_taskbar_date() {
+    int index_date = 34;
+    
+    char *weekday_disp = get_weekday_abbr(weekday);
+    for (int i = 0; i < 5; i++) {
+        scr_tab[index_date] = TASKBAR_CHAR_COLOR<<8|(weekday_disp[i]);
+        index_date++;
+    }
+
+    char day_of_month_disp[2];
+    sprintf(day_of_month_disp, "%02d", day_of_month);
+    for (int i = 0; i < 3; i++) {
+        scr_tab[index_date] = TASKBAR_CHAR_COLOR<<8|(day_of_month_disp[i]);
+        index_date++;
+    }
+
+    char *month_disp = get_month_abbr(month);
+    for (int i = 0; i < 5; i++) {
+        scr_tab[index_date] = TASKBAR_CHAR_COLOR<<8|(month_disp[i]);
+        index_date++;
+    }
 }
