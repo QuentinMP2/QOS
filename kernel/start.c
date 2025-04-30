@@ -1,14 +1,15 @@
-#include <n7OS/cpu.h>
-#include <inttypes.h>
-#include <n7OS/processor_structs.h>
-#include <n7OS/console.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <n7OS/paging.h>
+#include <inttypes.h>
+#include <n7OS/cpu.h>
+#include <n7OS/processor_structs.h>
+#include <n7OS/console.h>
 #include <n7OS/mem.h>
 #include <n7OS/kheap.h>
+#include <n7OS/paging.h>
 #include <n7OS/irq.h>
 #include <n7OS/time.h>
+#include <n7OS/sys.h>
 
 void kernel_start(void) {
 
@@ -20,12 +21,18 @@ void kernel_start(void) {
     // Enable interruptions
     sti();
     init_irq();
-    
+
+    // Enable syscalls
+    init_syscall();
+
+    // Enable the console
     init_console();
+
+    // Enable the timer
+    init_timer();
     
     printf("\fWelcome to QOS !\n\n");
-    __asm__ ("int $50");
-    printf("\n");
+    // __asm__ ("int $50");
     print_mem();
     printf("\n");
     // alloc_page_entry(0xA000FFFC, 1, 1);
@@ -33,7 +40,13 @@ void kernel_start(void) {
     // uint32_t test = *ptr;
     // test++; 
 
-    init_timer();
+    
+    // if (example() == 1)
+    //     printf("\nAppel systeme example OK\n");
+
+    // Shutdown the system
+    // shutdown(1);
+
 
     // We mustn't quit the kernel_start function 
     while (1) {
