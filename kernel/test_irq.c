@@ -2,6 +2,7 @@
 #include <n7OS/cpu.h>
 #include <n7OS/time.h>
 #include <n7OS/console.h>
+#include <n7OS/process.h>
 #include <stdio.h>
 
 extern void handler_IT();
@@ -25,6 +26,11 @@ void handler_32_C() {
 
     timer++;
     print_taskbar_time(timer);
+
+    sti();
+    if (timer % 100 == 0) {
+        update_quantum();
+    }
 }
 
 void handler_50_C() {

@@ -4,25 +4,41 @@
 #include <inttypes.h>
 
 #define NB_PROC 256 // Maximum number of processes
-#define BITMAP_SIZE (256/32)
+#define PROC_BITMAP_SIZE (256/32)
 #define STACK_SIZE 1024
+#define QUANTUM 1
 
 typedef uint32_t pid_t;
 
 /** Differents states of a process. */
 typedef enum {
-    ELU,
-    PRET,
-    BLOQUE
+    ELECTED,
+    READY,
+    BLOCKED
 } PROCESS_STATE;
 
 /** Definition of a process. */
 typedef struct {
     char *name;
     pid_t pid;
-    void *stack;
+    uint32_t *stack;
     PROCESS_STATE state;
     uint32_t regs[5];
 } process_t;
+
+/**
+ * @brief Update the current state of the quantum.
+ */
+void update_quantum();
+
+/**
+ * @brief Initialise processes.
+ */
+void init_proc();
+
+/**
+ * @brief Schedule processes.
+ */
+void schedule();
 
 #endif
