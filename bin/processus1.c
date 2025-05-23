@@ -1,6 +1,12 @@
 #include <stdio.h>
 
 void processus1() {
-  printf("Hello, world from P1\n");
-  for (;;);
+  while (1) {
+    for (int i = 0; i < 100000000; i++)
+    {
+      /* do nothing */
+    }
+    
+    printf("Hello world from P1\n");
+  }
 }

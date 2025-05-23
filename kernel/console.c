@@ -57,6 +57,19 @@ int get_line() {
  */
 void next_position() {
     index++;
+    if (index >= VGA_WIDTH * VGA_HEIGHT) {
+        for (int i = 1; i < VGA_HEIGHT; i++) {
+            for (int j = 0; j < VGA_WIDTH; j++) {
+                scr_tab[i + j] = scr_tab[i + j + VGA_WIDTH];
+            }
+        }
+
+        for (int i = 0; i < VGA_WIDTH; i++) {
+            scr_tab[i + (VGA_HEIGHT - 1) * VGA_WIDTH] = CHAR_COLOR<<8|32;
+        }
+
+        index -= VGA_WIDTH;
+    }
 }
 
 /**
@@ -71,6 +84,19 @@ void previous_position() {
  */
 void next_line() {
     index += VGA_WIDTH - get_column();
+    if (index >= VGA_WIDTH * VGA_HEIGHT) {
+        for (int i = 1; i < VGA_HEIGHT; i++) {
+            for (int j = 0; j < VGA_WIDTH; j++) {
+                scr_tab[i * VGA_WIDTH + j] = scr_tab[(i + 1) * VGA_WIDTH + j];
+            }
+        }
+
+        for (int i = 0; i < VGA_WIDTH; i++) {
+            scr_tab[i + (VGA_HEIGHT - 1) * VGA_WIDTH] = CHAR_COLOR<<8|32;
+        }
+
+        index -= VGA_WIDTH - get_column();
+    }
 }
 
 /**

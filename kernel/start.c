@@ -10,16 +10,16 @@
 #include <n7OS/irq.h>
 #include <n7OS/time.h>
 #include <n7OS/sys.h>
+#include <n7OS/process.h>
 
 void kernel_start(void) {
 
     // Initialize the placement address of the memory heap 
     kinit();
 
-    initialise_paging();
+    initialise_paging(); 
 
     // Enable interruptions
-    sti();
     init_irq();
 
     // Enable syscalls
@@ -27,19 +27,24 @@ void kernel_start(void) {
 
     // Enable the console
     init_console();
-
+    
     // Enable the timer
     init_timer();
-    
+
+    sti();
+
     printf("\fWelcome to QOS !\n\n");
     // __asm__ ("int $50");
-    print_mem();
-    printf("\n");
+    // print_mem();
+    // printf("\n");
+    
+    // Enable processes
+    init_proc();
+    
     // alloc_page_entry(0xA000FFFC, 1, 1);
     // uint32_t *ptr = (uint32_t*)0xA000FFFC;
     // uint32_t test = *ptr;
     // test++; 
-
     
     // if (example() == 1)
     //     printf("\nAppel systeme example OK\n");
