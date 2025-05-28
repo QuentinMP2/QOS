@@ -42,18 +42,14 @@ pid_t get_next_pid() {
     return current_pid++ % NB_PROC;
 }
 
-
-/**
- * @brief Check if the given position in the process_table is a process.
- * 
- * @param position the position of the process.
- * 
- * @return true if it is a process, false otherwise
- */
 uint8_t is_process(uint32_t position) {
     uint32_t bitmap_index = position / 32;
     uint8_t bitmap_offset = position % 32;
     return (free_proc_bitmap_table[bitmap_index] & (0b1 << bitmap_offset)) == (uint32_t)(0b1 << bitmap_offset);
+}
+
+process_t* get_process(uint32_t position) {
+    return &process_table[position];
 }
 
 /**
@@ -109,13 +105,6 @@ void clear_process(uint32_t position) {
     free_proc_bitmap_table[bitmap_index] &= (0b0 << bitmap_offset);
 }
 
-/** 
- * @brief Find a process. 
- * 
- * @param pid the pid of the process
- * 
- * @return the position of the process in the process_table
- */
 uint32_t find_process(pid_t pid) {
     uint32_t index = 0;
     uint8_t found = 0;
@@ -182,17 +171,23 @@ void create_process(char *name, void* func) {
     process_table[new_proc_position].regs[1] = (uint32_t)&process_table[new_proc_position].stack[STACK_SIZE - 1];
 }
 
-void delete_process(pid_t pid) {
+void kill_process(pid_t pid) {
     uint32_t proc_position = find_process(pid);
 
     clear_process(proc_position);
-    free(process_table[proc_position].stack);
+    // free((void*)process_table[proc_position].stack);
 }
 
 void block_process(pid_t pid) {
     uint32_t proc_position = find_process(pid);
 
     process_table[proc_position].state = BLOCKED;
+}
+
+void unblock_process(pid_t pid) {
+    uint32_t proc_position = find_process(pid);
+    
+    process_table[proc_position].state = READY;
 }
 
 void idle() {
