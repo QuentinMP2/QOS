@@ -11,6 +11,7 @@
 #include <n7OS/time.h>
 #include <n7OS/sys.h>
 #include <n7OS/process.h>
+#include <n7OS/keyboard.h>
 
 void kernel_start(void) {
 
@@ -30,6 +31,9 @@ void kernel_start(void) {
     
     // Enable the timer
     init_timer();
+
+    // Enable the keyboard
+    init_keyboard();
 
     sti();
 

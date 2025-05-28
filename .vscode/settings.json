@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "cpu.h": "c",
-        "paging.h": "c"
+        "paging.h": "c",
+        "console.h": "c"
     }
 }

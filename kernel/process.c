@@ -5,9 +5,13 @@
 
 extern int ctx_sw();
 extern int processus1();
+extern int minishell();
 
 /** Table of processes. */
 process_t process_table[NB_PROC];
+
+/** Current position for searching in the process table. */
+uint16_t index_pt = 0;
 
 /**
  * @brief Bitmap that reference free processes.
@@ -67,17 +71,20 @@ pid_t get_active_process() {
  * @return the position of the next process in the process_table.
  */
 uint32_t get_next_process() {
-    uint32_t index = 0;
     uint8_t found = 0;
+    uint16_t index = 0;
+
     while (index < NB_PROC && found != 1) {
-        if (is_process(index) && process_table[index].state == READY) {
+        if (is_process((index_pt + index) % NB_PROC) 
+            && process_table[(index_pt + index) % NB_PROC].state == READY) {
             found = 1;
+            index_pt = (index_pt + index) % NB_PROC;
         }
 
         index++;
     }
 
-    return index - 1;
+    return index_pt;
 }
 
 /**
@@ -192,13 +199,16 @@ void idle() {
     // Create the first process
     create_process("proc1", processus1);
 
+    // Create the second process
+    create_process("minishell", minishell);
+
     while(1) {
-        for (int i = 0; i < 100000000; i++)
-        {
-            /* do nothing */
-        }
+        // for (int i = 0; i < 100000000; i++)
+        // {
+        //     /* do nothing */
+        // }
         
-        printf("Hello world from Idle\n");
+        // printf("Hello world from Idle\n");
         hlt();
     }
 }

@@ -3,6 +3,8 @@
 
 #include <inttypes.h>
 
+#define BUFFER_SIZE 255
+
 // Keyboard ports
 #define KEYB_ENCODER        0x60 
 #define KEYB_CONTROLLER     0x64
@@ -37,8 +39,10 @@
 #define KEYB_PIC_IRQ 	0x1
 
 // Special keys pressed and released
-#define SHIFT_PRESSED   0x2A
-#define SHIFT_RELEASED  0xAA
+#define LSHIFT_PRESSED  0x2A
+#define LSHIFT_RELEASED 0xAA
+#define RSHIFT_PRESSED  0x36
+#define RSHIFT_RELEASED 0xB6
 #define CTRL_PRESSED    0x1D
 #define CTRL_RELEASED   0x9D
 #define ALT_PRESSED     0x38
@@ -112,7 +116,7 @@ enum KEYCODE {
 	KEY_Y                 = 'Y',
 	KEY_Z                 = 'Z',
 
-	KEY_RETURN            = '\r',
+	KEY_RETURN            = '\n',
 	KEY_ESCAPE            = 0x1001,
 	KEY_BACKSPACE         = '\b',
 
