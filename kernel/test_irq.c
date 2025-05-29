@@ -83,5 +83,5 @@ void handler_33_C() {
 }
 
 void handler_50_C() {
-    printf("Incredible! I've catched the interruption number 50!\n");
+    printf("Incredible! I've caught the interruption number 50!\n");
 }
